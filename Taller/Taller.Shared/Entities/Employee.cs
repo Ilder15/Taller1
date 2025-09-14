@@ -29,7 +29,7 @@ namespace Taller.Shared.Entities
         public DateTime FechaHora { get; set; }
 
         [Display(Name = "Salario")]
-        [MinLength(1000000, ErrorMessage = "El campo {0} debe ser minimo {1}.")]
+        [Range(1000000.00, 9999999999.99, ErrorMessage = "El campo {0} debe estar entre {1} y {2}.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public decimal Salary { get; set; }
     }
