@@ -1,33 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Taller.Backend.Data;
+using Taller.Backend.UnitOfWork.Interfaces;
 using Taller.Shared.Entities;
 namespace Taller.Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 
-public class EmployeesController : ControllerBase
-{  
-    public DataContext _Context { get; }
-    public EmployeesController(DataContext context)
+public class EmployeesController : GenericController<Employee>
+
+{
+    public EmployeesController(IGenericUnitOfWork<Employee> unitOfWork) : base(unitOfWork)
     {
-        _Context = context;
     }
-
-    [HttpGet]
-    public async Task<IActionResult> GetAsync()
-    {
-        return Ok(await _Context.Employees.ToListAsync());
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Post(Employee employee)
-    {
-        _Context.Employees.Add(employee);
-        await _Context.SaveChangesAsync(); 
-        return Ok(employee);
-    }
-
-
 }

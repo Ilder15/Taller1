@@ -20,8 +20,4 @@
     <ProjectReference Include="..\Taller.Shared\Taller.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UnitOfWork\Implementations\" />
-  </ItemGroup>
-
 </Project>
