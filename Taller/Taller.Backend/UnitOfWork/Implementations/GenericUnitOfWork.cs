@@ -1,4 +1,5 @@
-﻿using Taller.Backend.Repositories.Interfaces;
+﻿using Orders.Shared.DTOs;
+using Taller.Backend.Repositories.Interfaces;
 using Taller.Backend.UnitOfWork.Interfaces;
 using Taller.Shared.Responses;
 
@@ -27,4 +28,12 @@ public class GenericUnitOfWork<T> : IGenericUnitOfWork<T> where T : class
 
     public virtual async Task<ActionResponse<T>> UpdateAsync(T model)=> await
         _repository.UpdateAsync(model);
+
+    public virtual async Task<ActionResponse<IEnumerable<T>>> SearchByNameOrLastNameAsync(string query)
+        => await _repository.SearchByNameOrLastNameAsync(query);
+
+    public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination) => await _repository.GetAsync(pagination);
+
+    public virtual async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) => await _repository.GetTotalRecordsAsync(pagination);
+
 }

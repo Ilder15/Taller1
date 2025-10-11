@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Orders.Backend.Helpers;
+using Orders.Shared.DTOs;
 using System.Security.Cryptography.Xml;
 using Taller.Backend.Data;
 using Taller.Backend.Repositories.Interfaces;
@@ -116,5 +118,48 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         };
     }
 
+    public async Task<ActionResponse<IEnumerable<T>>> SearchByNameOrLastNameAsync(string query)
+    {
+        var result = new List<T>();
+        if (typeof(T).Name == "Employee")
+        {
+            // Assuming you have a DbSet<Employee> named Employees in your context
+            var employees = _context.Set<T>().AsQueryable();
+            result = employees
+                .Where(e =>
+                    EF.Property<string>(e, "FirstName").Contains(query) ||
+                    EF.Property<string>(e, "LastName").Contains(query))
+                .ToList();
+        }
+        return new ActionResponse<IEnumerable<T>>
+        {
+            WasSuccess = true,
+            Result = result
+        };
+    }
+
+    public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination)
+    {
+        var queryable = _entity.AsQueryable();
+
+        return new ActionResponse<IEnumerable<T>>
+        {
+            WasSuccess = true,
+            Result = await queryable
+                .Paginate(pagination)
+                .ToListAsync()
+        };
+    }
+
+    public virtual async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination)
+    {
+        var queryable = _entity.AsQueryable();
+        double count = await queryable.CountAsync();
+        return new ActionResponse<int>
+        {
+            WasSuccess = true,
+            Result = (int)count
+        };
+    }
 
 }
