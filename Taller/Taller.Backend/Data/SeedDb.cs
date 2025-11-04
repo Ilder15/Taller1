@@ -1,4 +1,5 @@
-﻿using Taller.Shared.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Taller.Shared.Entities;
 
 namespace Taller.Backend.Data;
 
@@ -14,9 +15,20 @@ public class SeedDb
     public async Task SeedDbAsync()
     {
         await _context.Database.EnsureCreatedAsync();
+        await CheckCountriesFullAsync();
         await CheckEmployeesAsync();
         await CheckCountriesAsync();
     }
+
+    private async Task CheckCountriesFullAsync()
+    {
+        if (!_context.Countries.Any())
+        {
+            var countriesSQLScript = File.ReadAllText("Data\\CountriesStatesCities.sql");
+            await _context.Database.ExecuteSqlRawAsync(countriesSQLScript);
+        }
+    }
+
 
     private async Task CheckCountriesAsync()
     {
