@@ -131,6 +131,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
                     EF.Property<string>(e, "LastName").Contains(query))
                 .ToList();
         }
+
         return new ActionResponse<IEnumerable<T>>
         {
             WasSuccess = true,
@@ -141,6 +142,20 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination)
     {
         var queryable = _entity.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(pagination.Filter))
+        {
+            if (typeof(T).Name == "Employee")
+            {
+                queryable = queryable.Where(x =>
+                    EF.Property<string>(x, "FirstName").ToLower().Contains(pagination.Filter.ToLower()) ||
+                    EF.Property<string>(x, "LastName").ToLower().Contains(pagination.Filter.ToLower())
+                );
+            }
+            else
+            {
+            }
+        }
 
         return new ActionResponse<IEnumerable<T>>
         {
