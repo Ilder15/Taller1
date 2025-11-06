@@ -1,0 +1,21 @@
+﻿using Taller.Backend.Repositories.Interfaces;
+using Taller.Backend.UnitsOfWork.Interfaces;
+using Taller.Shared.DTOs;
+using Taller.Shared.Entities;
+using Taller.Shared.Responses;
+
+namespace Taller.Backend.UnitOfWork.Implementations;
+
+public class CitiesUnitOfWork : GenericUnitOfWork<City>, ICitiesUnitOfWork
+{
+    private readonly ICitiesRepository _citiesRepository;
+
+    public CitiesUnitOfWork(IGenericRepository<City> repository, ICitiesRepository citiesRepository) : base(repository)
+    {
+        _citiesRepository = citiesRepository;
+    }
+
+    public override async Task<ActionResponse<IEnumerable<City>>> GetAsync(PaginationDTO pagination) => await _citiesRepository.GetAsync(pagination);
+
+    public override async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) => await _citiesRepository.GetTotalRecordsAsync(pagination);
+}

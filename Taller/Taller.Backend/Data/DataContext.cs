@@ -18,8 +18,6 @@ public class DataContext : DbContext
         modelBuilder.Entity<Country>().HasIndex(c => c.Name).IsUnique();
         modelBuilder.Entity<City>().HasIndex(c => new { c.StateId, c.Name }).IsUnique();
         modelBuilder.Entity<Employee>().HasIndex(x => new { x.FirstName, x.LastName }).IsUnique();
-        {
-        }
         modelBuilder.Entity<State>().HasIndex(s => new { s.CountryId, s.Name }).IsUnique();
         DisableCascadingDelete(modelBuilder);
     }

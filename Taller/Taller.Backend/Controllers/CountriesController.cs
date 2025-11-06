@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Taller.Backend.Data;
 using Taller.Backend.UnitOfWork.Interfaces;
+using Taller.Shared.DTOs;
 using Taller.Shared.Entities;
 namespace Taller.Backend.Controllers;
 
@@ -37,5 +38,16 @@ public class CountriesController : GenericController<Country>
         }
         return NotFound(response.Message);
     }
+    [HttpGet("paginated")]
+    public override async Task<IActionResult> GetAsync(PaginationDTO pagination)
+    {
+        var response = await _countriesUnitOfWork.GetAsync(pagination);
+        if (response.WasSuccess)
+        {
+            return Ok(response.Result);
+        }
+        return BadRequest();
+    }
+
 }
 

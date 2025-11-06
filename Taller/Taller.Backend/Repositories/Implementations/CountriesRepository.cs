@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Taller.Backend.Data;
+using Taller.Backend.Helpers;
 using Taller.Backend.Repositories.Implementations;
 using Taller.Backend.Repositories.Interfaces;
+using Taller.Shared.DTOs;
 using Taller.Shared.Entities;
 using Taller.Shared.Responses;
 
@@ -19,7 +21,7 @@ public class CountriesRepository : GenericRepository<Country>, ICountriesReposit
     public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync()
     {
         var countries = await _context.Countries
-            .Include(c => c.States)
+                .OrderBy(x => x.Name)
             .ToListAsync();
         return new ActionResponse<IEnumerable<Country>>
         {
@@ -27,6 +29,23 @@ public class CountriesRepository : GenericRepository<Country>, ICountriesReposit
             Result = countries
         };
     }
+
+    public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.Countries
+            .Include(c => c.States)
+            .AsQueryable();
+
+        return new ActionResponse<IEnumerable<Country>>
+        {
+            WasSuccess = true,
+            Result = await queryable
+                .OrderBy(x => x.Name)
+                .Paginate(pagination)
+                .ToListAsync()
+        };
+    }
+
 
     public override async Task<ActionResponse<Country>> GetAsync(int id)
     {

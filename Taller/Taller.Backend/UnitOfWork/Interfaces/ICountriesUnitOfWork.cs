@@ -1,4 +1,5 @@
-﻿using Taller.Shared.Entities;
+﻿using Taller.Shared.DTOs;
+using Taller.Shared.Entities;
 using Taller.Shared.Responses;
 
 namespace Taller.Backend.UnitOfWork.Interfaces
@@ -8,6 +9,9 @@ namespace Taller.Backend.UnitOfWork.Interfaces
         Task<ActionResponse<Country>> GetAsync(int id);
 
         Task<ActionResponse<IEnumerable<Country>>> GetAsync();
+
+        Task<ActionResponse<IEnumerable<Country>>> GetAsync(PaginationDTO pagination);
+
     }
 }
 

@@ -17,7 +17,7 @@ public class SeedDb
         await _context.Database.EnsureCreatedAsync();
         await CheckCountriesFullAsync();
         await CheckEmployeesAsync();
-        await CheckCountriesAsync();
+        //await CheckCountriesAsync();
     }
 
     private async Task CheckCountriesFullAsync()
@@ -189,7 +189,7 @@ public class SeedDb
                 Salary = 14200000
             });
 
-        // 40 registros adicionales
+       
         _context.Employees.Add(new Employee { FirstName = "Pedro", LastName = "Ramírez", FechaHora = new DateTime(2025, 9, 6, 8, 0, 0), IsActive = true, Salary = 12000000 });
         _context.Employees.Add(new Employee { FirstName = "Lucía", LastName = "Morales", FechaHora = new DateTime(2025, 9, 5, 9, 15, 0), IsActive = true, Salary = 13000000 });
         _context.Employees.Add(new Employee { FirstName = "Miguel", LastName = "Castro", FechaHora = new DateTime(2025, 9, 4, 10, 30, 0), IsActive = false, Salary = 11000000 });

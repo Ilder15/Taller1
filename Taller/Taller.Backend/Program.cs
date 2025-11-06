@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Orders.Backend.Repositories.Implementations;
+using Taller.Backend.Repositories.Implementations;
 using System.Text.Json.Serialization;
 using Taller.Backend.Data;
-using Taller.Backend.Repositories.Implementations;
 using Taller.Backend.Repositories.Interfaces;
 using Taller.Backend.UnitOfWork.Implementations;
 using Taller.Backend.UnitOfWork.Interfaces;
@@ -22,6 +21,9 @@ builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=localConnec
 builder.Services.AddTransient<SeedDb>();
 builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
 builder.Services.AddScoped<IStatesRepository, StatesRepository>();
+builder.Services.AddScoped<ICitiesRepository, CitiesRepository>();
+
+builder.Services.AddScoped<ICitiesUnitOfWork, CitiesUnitOfWork>();
 builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
 builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
 

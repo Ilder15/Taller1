@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Orders.Backend.Helpers;
-using Orders.Shared.DTOs;
+using Taller.Backend.Helpers;
+using Taller.Shared.DTOs;
 using System.Security.Cryptography.Xml;
 using Taller.Backend.Data;
 using Taller.Backend.Repositories.Interfaces;

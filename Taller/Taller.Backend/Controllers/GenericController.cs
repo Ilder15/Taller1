@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Orders.Shared.DTOs;
+using Taller.Shared.DTOs;
 using Taller.Backend.UnitOfWork.Interfaces;
 
 namespace Taller.Backend.Controllers;
@@ -11,29 +11,6 @@ public class GenericController<T> : Controller where T : class
     public GenericController(IGenericUnitOfWork<T> unitOfWork)
     {
         _unitOfWork = unitOfWork;
-    }
-
-
-   [HttpGet]
-    public virtual async Task<IActionResult> GetAsync()
-    {
-        var action = await _unitOfWork.GetAsync();
-        if (action.WasSuccess)
-        {
-            return Ok(action.Result);
-        }
-        return BadRequest();
-    }
-
-    [HttpGet("{id}")]
-    public virtual async Task<IActionResult> GetAsync(int id)
-    {
-        var action = await _unitOfWork.GetAsync(id);
-        if (action.WasSuccess)
-        {
-            return Ok(action.Result);
-        }
-        return NotFound();
     }
 
     [HttpGet("paginated")]
@@ -58,6 +35,27 @@ public class GenericController<T> : Controller where T : class
         return BadRequest();
     }
 
+    [HttpGet]
+    public virtual async Task<IActionResult> GetAsync()
+    {
+        var action = await _unitOfWork.GetAsync();
+        if (action.WasSuccess)
+        {
+            return Ok(action.Result);
+        }
+        return BadRequest(action.Message);
+    }
+
+    [HttpGet("{id}")]
+    public virtual async Task<IActionResult> GetAsync(int id)
+    {
+        var action = await _unitOfWork.GetAsync(id);
+        if (action.WasSuccess)
+        {
+            return Ok(action.Result);
+        }
+        return NotFound();
+    }
 
     [HttpPost]
     public virtual async Task<IActionResult> PostAsync(T model)

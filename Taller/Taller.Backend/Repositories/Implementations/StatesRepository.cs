@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Taller.Backend.Data;
+using Taller.Backend.Helpers;
 using Taller.Backend.Repositories.Implementations;
 using Taller.Backend.Repositories.Interfaces;
+using Taller.Shared.DTOs;
 using Taller.Shared.Entities;
 using Taller.Shared.Responses;
 
-namespace Orders.Backend.Repositories.Implementations;
+namespace Taller.Backend.Repositories.Implementations;
 
 public class StatesRepository : GenericRepository<State>, IStatesRepository
 {
@@ -14,6 +16,37 @@ public class StatesRepository : GenericRepository<State>, IStatesRepository
     public StatesRepository(DataContext context) : base(context)
     {
         _context = context;
+    }
+
+    public override async Task<ActionResponse<IEnumerable<State>>> GetAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.States
+            .Include(x => x.Cities)
+            .Where(x => x.Country!.Id == pagination.Id)
+            .AsQueryable();
+
+        return new ActionResponse<IEnumerable<State>>
+        {
+            WasSuccess = true,
+            Result = await queryable
+                .OrderBy(x => x.Name)
+                .Paginate(pagination)
+                .ToListAsync()
+        };
+    }
+
+    public override async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.States
+            .Where(x => x.Country!.Id == pagination.Id)
+            .AsQueryable();
+
+        double count = await queryable.CountAsync();
+        return new ActionResponse<int>
+        {
+            WasSuccess = true,
+            Result = (int)count
+        };
     }
 
     public override async Task<ActionResponse<IEnumerable<State>>> GetAsync()
@@ -50,4 +83,3 @@ public class StatesRepository : GenericRepository<State>, IStatesRepository
         };
     }
 }
-

@@ -1,6 +1,7 @@
 ﻿using Taller.Backend.Repositories.Interfaces;
 using Taller.Backend.UnitOfWork.Implementations;
 using Taller.Backend.UnitsOfWork.Interfaces;
+using Taller.Shared.DTOs;
 using Taller.Shared.Entities;
 using Taller.Shared.Responses;
 
@@ -14,6 +15,10 @@ public class StatesUnitOfWork : GenericUnitOfWork<State>, IStatesUnitOfWork
     {
         _statesRepository = statesRepository;
     }
+
+    public override async Task<ActionResponse<IEnumerable<State>>> GetAsync(PaginationDTO pagination) => await _statesRepository.GetAsync(pagination);
+
+    public override async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) => await _statesRepository.GetTotalRecordsAsync(pagination);
 
     public override async Task<ActionResponse<IEnumerable<State>>> GetAsync() => await _statesRepository.GetAsync();
 

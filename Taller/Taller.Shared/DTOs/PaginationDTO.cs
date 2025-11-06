@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Orders.Shared.DTOs;
+namespace Taller.Shared.DTOs;
 
 public class PaginationDTO
 {
