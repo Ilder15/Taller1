@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Taller.Shared.Entities;
 
 namespace Taller.Backend.Data;
-public class DataContext : DbContext
+public class DataContext : IdentityDbContext<User>
 {
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
@@ -20,6 +21,9 @@ public class DataContext : DbContext
         modelBuilder.Entity<Employee>().HasIndex(x => new { x.FirstName, x.LastName }).IsUnique();
         modelBuilder.Entity<State>().HasIndex(s => new { s.CountryId, s.Name }).IsUnique();
         DisableCascadingDelete(modelBuilder);
+        modelBuilder.Entity<Employee>()
+        .Property(e => e.Salary)
+        .HasPrecision(12, 2);
     }
 
     private void DisableCascadingDelete(ModelBuilder modelBuilder)
