@@ -6,7 +6,10 @@ else
 {
     <MudDialog>
         <DialogContent>
-            <CountriesForm Country="country" OnValidSubmit="EditAsync" ReturnAction="Return" />
+            <FormWithName Label="País:"
+                          Model="country"
+                          OnValidSubmit="EditAsync"
+                          ReturnAction="Return" />
         </DialogContent>
     </MudDialog>
 }
