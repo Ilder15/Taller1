@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using System.Diagnostics.Metrics;
@@ -7,7 +8,7 @@ using Taller.Frontend.Repositories;
 using Taller.Shared.Entities;
 
 namespace Taller.Frontend.Components.Pages.Employees;
-
+[Authorize(Roles = "Admin")]
 public partial class EmployeesIndex
 {
     private List<Employee>? Employees { get; set; }

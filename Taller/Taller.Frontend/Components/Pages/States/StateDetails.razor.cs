@@ -1,13 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using System.Net;
 using Taller.Frontend.Components.Pages.Cities;
 using Taller.Frontend.Components.Pages.Shared;
-using System.Net;
 using Taller.Frontend.Repositories;
 using Taller.Shared.Entities;
 
 namespace Taller.Frontend.Components.Pages.States;
-
+[Authorize(Roles = "Admin")]
 public partial class StateDetails
 {
     private State? state;

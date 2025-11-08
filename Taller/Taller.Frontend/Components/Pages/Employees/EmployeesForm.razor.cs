@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
@@ -9,7 +10,7 @@ using Taller.Shared.Entities;
 
 
 namespace Taller.Frontend.Components.Pages.Employees;
-
+[Authorize(Roles = "Admin")]
 public partial class EmployeesForm : ComponentBase
 {
     private EditContext editContext = null!;

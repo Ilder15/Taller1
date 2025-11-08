@@ -1,10 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Taller.Frontend.Repositories;
 using Taller.Shared.Entities;
 
 namespace Taller.Frontend.Components.Pages.Countries;
-
+[Authorize(Roles = "Admin")]
 public partial class CountriesEdit
 {
     private Country? country;

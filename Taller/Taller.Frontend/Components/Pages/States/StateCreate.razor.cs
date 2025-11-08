@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Taller.Frontend.Repositories;
@@ -5,7 +6,7 @@ using Taller.Shared.Entities;
 
 
 namespace Taller.Frontend.Components.Pages.States;
-
+[Authorize(Roles = "Admin")]
 public partial class StateCreate
 {
     private State state = new();
