@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Taller.Shared.DTOs;
 using Taller.Shared.Entities;
 
 namespace Taller.Backend.UnitOfWork.Interfaces;
@@ -14,4 +15,8 @@ public interface IUsersUnitOfWork
     Task AddUserToRoleAsync(User user, string roleName);
 
     Task<bool> IsUserInRoleAsync(User user, string roleName);
+    Task<SignInResult> LoginAsync(LoginDTO model);
+
+    Task LogoutAsync();
+
 }

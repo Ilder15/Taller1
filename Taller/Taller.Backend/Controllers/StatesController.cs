@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Taller.Backend.Controllers;
 using Taller.Backend.UnitOfWork.Interfaces;
 using Taller.Backend.UnitsOfWork.Interfaces;
@@ -8,6 +10,7 @@ using Taller.Shared.Entities;
 namespace Taller.Backend.Controllers;
 
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("api/[controller]")]
 public class StatesController : GenericController<State>
 {
