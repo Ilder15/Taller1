@@ -45,4 +45,12 @@ public class CitiesController : GenericController<City>
         return BadRequest(action.Message);
     }
 
+    [AllowAnonymous]
+    [HttpGet("combo/{stateId:int}")]
+    public async Task<IActionResult> GetComboAsync(int stateId)
+    {
+        return Ok(await _citiesUnitOfWork.GetComboAsync(stateId));
+    }
+
+
 }

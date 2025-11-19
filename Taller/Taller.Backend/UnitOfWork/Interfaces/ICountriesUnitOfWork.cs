@@ -12,6 +12,7 @@ namespace Taller.Backend.UnitOfWork.Interfaces
 
         Task<ActionResponse<IEnumerable<Country>>> GetAsync(PaginationDTO pagination);
         Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination);
+        Task<IEnumerable<Country>> GetComboAsync();
 
     }
 }
