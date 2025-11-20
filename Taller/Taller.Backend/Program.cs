@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Text.Json.Serialization;
 using Taller.Backend.Data;
+using Taller.Backend.Helpers;
 using Taller.Backend.Repositories.Implementations;
 using Taller.Backend.Repositories.Interfaces;
 using Taller.Backend.UnitOfWork.Implementations;
@@ -67,9 +68,10 @@ builder.Services.AddScoped<ICitiesUnitOfWork, CitiesUnitOfWork>();
 builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
 builder.Services.AddScoped<IStatesUnitOfWork, StatesUnitOfWork>();
 
-
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+builder.Services.AddScoped<IFileStorage, FileStorage>(); 
 
 builder.Services.AddIdentity<User, IdentityRole>(x =>
 {
