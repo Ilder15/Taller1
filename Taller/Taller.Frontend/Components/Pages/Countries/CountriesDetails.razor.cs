@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using System.Net;
-using Taller.Frontend.Components.Pages.Shared;
+using Taller.Frontend.Components.Shared;
 using Taller.Frontend.Components.Pages.States;
 using Taller.Frontend.Repositories;
 using Taller.Shared.Entities;

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Taller.Frontend.Components.Pages.Shared;
+namespace Taller.Frontend.Components.Shared;
 
 public partial class FilterComponent
 {

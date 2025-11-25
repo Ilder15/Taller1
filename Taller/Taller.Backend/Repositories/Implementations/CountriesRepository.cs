@@ -18,16 +18,11 @@ public class CountriesRepository : GenericRepository<Country>, ICountriesReposit
         _context = context;
     }
 
-    public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync()
+    public async Task<IEnumerable<Country>> GetComboAsync()
     {
-        var countries = await _context.Countries
-                .OrderBy(x => x.Name)
+        return await _context.Countries
+            .OrderBy(c => c.Name)
             .ToListAsync();
-        return new ActionResponse<IEnumerable<Country>>
-        {
-            WasSuccess = true,
-            Result = countries
-        };
     }
 
     public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync(PaginationDTO pagination)
@@ -40,7 +35,6 @@ public class CountriesRepository : GenericRepository<Country>, ICountriesReposit
         {
             queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
         }
-
 
         return new ActionResponse<IEnumerable<Country>>
         {
@@ -69,35 +63,35 @@ public class CountriesRepository : GenericRepository<Country>, ICountriesReposit
         };
     }
 
-
+    public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync()
+    {
+        var countries = await _context.Countries
+            .Include(x => x.States)
+            .ToListAsync();
+        return new ActionResponse<IEnumerable<Country>>
+        {
+            WasSuccess = true,
+            Result = countries
+        };
+    }
 
     public override async Task<ActionResponse<Country>> GetAsync(int id)
     {
         var country = await _context.Countries
-             .Include(c => c.States!)
-             .ThenInclude(s => s.Cities)
-             .FirstOrDefaultAsync(c => c.Id == id);
-
+            .Include(x => x.States!)
+            .ThenInclude(x => x.Cities)
+            .FirstOrDefaultAsync(x => x.Id == id);
         if (country == null)
         {
             return new ActionResponse<Country>
             {
-                WasSuccess = false,
-                Message = "País no existe"
+                Message = "Registro no encontrado"
             };
         }
-
         return new ActionResponse<Country>
         {
             WasSuccess = true,
             Result = country
         };
     }
-    public async Task<IEnumerable<Country>> GetComboAsync()
-    {
-        return await _context.Countries
-            .OrderBy(c => c.Name)
-            .ToListAsync();
-    }
-
 }

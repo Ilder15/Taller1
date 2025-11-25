@@ -1,7 +1,7 @@
-﻿
-using Taller.Backend.Repositories.Interfaces;
+﻿using Taller.Backend.Repositories.Interfaces;
 using Taller.Backend.UnitOfWork.Implementations;
 using Taller.Backend.UnitOfWork.Interfaces;
+using Taller.Backend.UnitsOfWork.Interfaces;
 using Taller.Shared.DTOs;
 using Taller.Shared.Entities;
 using Taller.Shared.Responses;
@@ -17,11 +17,13 @@ public class CountriesUnitOfWork : GenericUnitOfWork<Country>, ICountriesUnitOfW
         _countriesRepository = countriesRepository;
     }
 
+    public async Task<IEnumerable<Country>> GetComboAsync() => await _countriesRepository.GetComboAsync();
+
+    public override async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) => await _countriesRepository.GetTotalRecordsAsync(pagination);
+
     public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync(PaginationDTO pagination) => await _countriesRepository.GetAsync(pagination);
+
     public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync() => await _countriesRepository.GetAsync();
 
     public override async Task<ActionResponse<Country>> GetAsync(int id) => await _countriesRepository.GetAsync(id);
-    public override async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) => await _countriesRepository.GetTotalRecordsAsync(pagination);
-    public async Task<IEnumerable<Country>> GetComboAsync() => await _countriesRepository.GetComboAsync();
 }
-

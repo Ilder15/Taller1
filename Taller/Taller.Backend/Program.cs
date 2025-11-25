@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -55,6 +55,7 @@ builder.Services.AddSwaggerGen(c =>
         });
 });
 
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=localConnection"));
 
 builder.Services.AddTransient<SeedDb>();

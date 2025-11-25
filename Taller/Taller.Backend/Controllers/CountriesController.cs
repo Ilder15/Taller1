@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Taller.Backend.Data;
+using Taller.Backend.Controllers;
 using Taller.Backend.UnitOfWork.Interfaces;
+using Taller.Backend.UnitsOfWork.Interfaces;
 using Taller.Shared.DTOs;
 using Taller.Shared.Entities;
+
 namespace Taller.Backend.Controllers;
 
 [ApiController]
@@ -15,41 +16,16 @@ public class CountriesController : GenericController<Country>
 {
     private readonly ICountriesUnitOfWork _countriesUnitOfWork;
 
-    public CountriesController(IGenericUnitOfWork<Country> unit, ICountriesUnitOfWork countriesUnitOfWork) : base(unit)
+    public CountriesController(IGenericUnitOfWork<Country> unitOfWork, ICountriesUnitOfWork countriesUnitOfWork) : base(unitOfWork)
     {
         _countriesUnitOfWork = countriesUnitOfWork;
     }
 
-    [HttpGet]
-    public override async Task<IActionResult> GetAsync()
+    [AllowAnonymous]
+    [HttpGet("combo")]
+    public async Task<IActionResult> GetComboAsync()
     {
-        var response = await _countriesUnitOfWork.GetAsync();
-        if (response.WasSuccess)
-        {
-            return Ok(response.Result);
-        }
-        return BadRequest();
-    }
-
-    [HttpGet("{id}")]
-    public override async Task<IActionResult> GetAsync(int id)
-    {
-        var response = await _countriesUnitOfWork.GetAsync(id);
-        if (response.WasSuccess)
-        {
-            return Ok(response.Result);
-        }
-        return NotFound(response.Message);
-    }
-    [HttpGet("paginated")]
-    public override async Task<IActionResult> GetAsync(PaginationDTO pagination)
-    {
-        var response = await _countriesUnitOfWork.GetAsync(pagination);
-        if (response.WasSuccess)
-        {
-            return Ok(response.Result);
-        }
-        return BadRequest();
+        return Ok(await _countriesUnitOfWork.GetComboAsync());
     }
 
     [HttpGet("totalRecords")]
@@ -63,14 +39,36 @@ public class CountriesController : GenericController<Country>
         return BadRequest();
     }
 
-    [AllowAnonymous]
-    [HttpGet("combo")]
-    public async Task<IActionResult> GetComboAsync()
+    [HttpGet("paginated")]
+    public override async Task<IActionResult> GetAsync(PaginationDTO pagination)
     {
-        return Ok(await _countriesUnitOfWork.GetComboAsync());
+        var response = await _countriesUnitOfWork.GetAsync(pagination);
+        if (response.WasSuccess)
+        {
+            return Ok(response.Result);
+        }
+        return BadRequest();
     }
 
+    [HttpGet]
+    public override async Task<IActionResult> GetAsync()
+    {
+        var action = await _countriesUnitOfWork.GetAsync();
+        if (action.WasSuccess)
+        {
+            return Ok(action.Result);
+        }
+        return BadRequest(action.Message);
+    }
 
-
+    [HttpGet("{id}")]
+    public override async Task<IActionResult> GetAsync(int id)
+    {
+        var action = await _countriesUnitOfWork.GetAsync(id);
+        if (action.WasSuccess)
+        {
+            return Ok(action.Result);
+        }
+        return NotFound();
+    }
 }
-

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Taller.Backend.Controllers;
 using Taller.Backend.UnitOfWork.Interfaces;
 using Taller.Backend.UnitsOfWork.Interfaces;
 using Taller.Shared.DTOs;
@@ -21,14 +20,20 @@ public class CitiesController : GenericController<City>
         _citiesUnitOfWork = citiesUnitOfWork;
     }
 
+    [AllowAnonymous]
+    [HttpGet("combo/{stateId:int}")]
+    public async Task<IActionResult> GetComboAsync(int stateId)
+    {
+        return Ok(await _citiesUnitOfWork.GetComboAsync(stateId));
+    }
+
     [HttpGet("paginated")]
     public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
     {
-        var action = await _citiesUnitOfWork.GetAsync(pagination);
-
-        if (action.WasSuccess)
+        var response = await _citiesUnitOfWork.GetAsync(pagination);
+        if (response.WasSuccess)
         {
-            return Ok(action.Result);
+            return Ok(response.Result);
         }
         return BadRequest();
     }
@@ -37,20 +42,10 @@ public class CitiesController : GenericController<City>
     public override async Task<IActionResult> GetTotalRecordsAsync([FromQuery] PaginationDTO pagination)
     {
         var action = await _citiesUnitOfWork.GetTotalRecordsAsync(pagination);
-
         if (action.WasSuccess)
         {
             return Ok(action.Result);
         }
-        return BadRequest(action.Message);
+        return BadRequest();
     }
-
-    [AllowAnonymous]
-    [HttpGet("combo/{stateId:int}")]
-    public async Task<IActionResult> GetComboAsync(int stateId)
-    {
-        return Ok(await _citiesUnitOfWork.GetComboAsync(stateId));
-    }
-
-
 }

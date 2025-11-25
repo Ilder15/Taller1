@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore; 
 using Taller.Backend.Data;
 using Taller.Backend.Helpers;
 using Taller.Backend.Repositories.Implementations;
@@ -16,6 +16,14 @@ public class StatesRepository : GenericRepository<State>, IStatesRepository
     public StatesRepository(DataContext context) : base(context)
     {
         _context = context;
+    }
+
+    public async Task<IEnumerable<State>> GetComboAsync(int countryId)
+    {
+        return await _context.States
+            .Where(s => s.CountryId == countryId)
+            .OrderBy(s => s.Name)
+            .ToListAsync();
     }
 
     public override async Task<ActionResponse<IEnumerable<State>>> GetAsync(PaginationDTO pagination)
@@ -92,12 +100,4 @@ public class StatesRepository : GenericRepository<State>, IStatesRepository
             Result = state
         };
     }
-    public async Task<IEnumerable<State>> GetComboAsync(int countryId)
-    {
-        return await _context.States
-            .Where(s => s.CountryId == countryId)
-            .OrderBy(s => s.Name)
-            .ToListAsync();
-    }
-
 }

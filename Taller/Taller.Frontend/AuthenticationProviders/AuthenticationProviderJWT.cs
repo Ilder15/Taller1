@@ -23,6 +23,20 @@ public class AuthenticationProviderJWT : AuthenticationStateProvider, ILoginServ
         _anonimous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
     }
 
+    public async Task LoginAsync(string token)
+    {
+        await _jSRuntime.SetLocalStorage(_tokenKey, token);
+        var authState = BuildAuthenticationState(token);
+        NotifyAuthenticationStateChanged(Task.FromResult(authState));
+    }
+
+    public async Task LogoutAsync()
+    {
+        await _jSRuntime.RemoveLocalStorage(_tokenKey);
+        _httpClient.DefaultRequestHeaders.Authorization = null;
+        NotifyAuthenticationStateChanged(Task.FromResult(_anonimous));
+    }
+
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         try
@@ -50,21 +64,28 @@ public class AuthenticationProviderJWT : AuthenticationStateProvider, ILoginServ
     private IEnumerable<Claim> ParseClaimsFromJWT(string token)
     {
         var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-        var unserializedToken = jwtSecurityTokenHandler.ReadJwtToken(token);
-        return unserializedToken.Claims;
-    }
+        // Leer el token
+        var unserializedToken = jwtSecurityTokenHandler.ReadToken(token) as JwtSecurityToken;
 
-    public async Task LoginAsync(string token)
-    {
-        await _jSRuntime.SetLocalStorage(_tokenKey, token);
-        var authState = BuildAuthenticationState(token);
-        NotifyAuthenticationStateChanged(Task.FromResult(authState));
-    }
+        // Si la lectura falló o no es un JWT válido
+        if (unserializedToken == null) return Enumerable.Empty<Claim>();
 
-    public async Task LogoutAsync()
-    {
-        await _jSRuntime.RemoveLocalStorage(_tokenKey);
-        _httpClient.DefaultRequestHeaders.Authorization = null;
-        NotifyAuthenticationStateChanged(Task.FromResult(_anonimous));
+        // Crear una lista de Claims para el ClaimsIdentity
+        var claims = new List<Claim>();
+
+        // 1. Añadir todos los claims originales
+        claims.AddRange(unserializedToken.Claims);
+
+        // 2. ¡EL PASO CLAVE! Mapear el claim de rol.
+        // Asumo que el claim de rol en tu JWT se llama 'role'. Si es diferente (ej: 'roles'), cámbialo aquí.
+        var roleClaims = claims.Where(c => c.Type == "role" || c.Type == "Role").ToList();
+
+        foreach (var roleClaim in roleClaims)
+        {
+            // Reemplazar o añadir el claim de rol al tipo estándar (ClaimTypes.Role)
+            claims.Add(new Claim(ClaimTypes.Role, roleClaim.Value));
+        }
+
+        return claims;
     }
 }

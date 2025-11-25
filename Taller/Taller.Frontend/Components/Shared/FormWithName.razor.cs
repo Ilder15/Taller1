@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Taller.Shared.Interfaces;
 
-namespace Taller.Frontend.Components.Pages.Shared
+namespace Taller.Frontend.Components.Shared
 {
     public partial class FormWithName<TModel> where TModel : IEntityWithName
     {

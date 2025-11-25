@@ -8,8 +8,6 @@ public enum UserType
     Admin,
 
     [Description("Usuario")]
-    User, 
+    User
 
-    [Description("Empleado")]
-    Employee
 }

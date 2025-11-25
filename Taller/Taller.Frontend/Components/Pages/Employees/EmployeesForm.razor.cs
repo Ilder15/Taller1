@@ -11,6 +11,8 @@ using Taller.Shared.Entities;
 
 namespace Taller.Frontend.Components.Pages.Employees;
 [Authorize(Roles = "Admin")]
+[Authorize(Roles = "User")]
+[Authorize(Roles = "Employee")]
 public partial class EmployeesForm : ComponentBase
 {
     private EditContext editContext = null!;

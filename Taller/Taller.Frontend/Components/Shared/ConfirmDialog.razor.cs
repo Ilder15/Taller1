@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace Taller.Frontend.Components.Pages.Shared;
-
+namespace Taller.Frontend.Components.Shared;
 
 public partial class ConfirmDialog
 {
@@ -18,5 +17,4 @@ public partial class ConfirmDialog
     {
         MudDialog.Close(DialogResult.Cancel());
     }
-
 }

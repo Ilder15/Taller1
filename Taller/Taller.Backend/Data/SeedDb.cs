@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Taller.Backend.UnitOfWork.Interfaces;
+using Taller.Backend.UnitsOfWork.Interfaces;
 using Taller.Shared.Entities;
 using Taller.Shared.Enums;
 
@@ -21,7 +22,8 @@ public class SeedDb
         await _context.Database.EnsureCreatedAsync();
         await CheckCountriesFullAsync();
         await CheckEmployeesAsync();
-        //await CheckCountriesAsync();
+
+        await CheckCountriesAsync();
         await CheckRolesAsync();
         await CheckUserAsync("1010", "Ilder", "Lopez", "ilder@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", UserType.Admin);
         await CheckUserAsync("1010", "Juan", "Zuluaga", "zulu@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", UserType.Admin);

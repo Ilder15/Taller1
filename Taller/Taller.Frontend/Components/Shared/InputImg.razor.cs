@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace Taller.Frontend.Components.Pages.Shared;
+namespace Taller.Frontend.Components.Shared;
 
 public partial class InputImg
 {

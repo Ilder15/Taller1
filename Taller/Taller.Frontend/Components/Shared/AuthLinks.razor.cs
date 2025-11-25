@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
 using Taller.Frontend.Components.Pages.Auth;
 
-namespace Taller.Frontend.Components.Pages.Shared;
+namespace Taller.Frontend.Components.Shared;
 
 public partial class AuthLinks
 {

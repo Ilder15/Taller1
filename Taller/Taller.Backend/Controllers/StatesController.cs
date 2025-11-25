@@ -21,6 +21,35 @@ public class StatesController : GenericController<State>
         _statesUnitOfWork = statesUnitOfWork;
     }
 
+    [AllowAnonymous]
+    [HttpGet("combo/{countryId:int}")]
+    public async Task<IActionResult> GetComboAsync(int countryId)
+    {
+        return Ok(await _statesUnitOfWork.GetComboAsync(countryId));
+    }
+
+    [HttpGet("paginated")]
+    public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+    {
+        var response = await _statesUnitOfWork.GetAsync(pagination);
+        if (response.WasSuccess)
+        {
+            return Ok(response.Result);
+        }
+        return BadRequest();
+    }
+
+    [HttpGet("totalRecords")]
+    public override async Task<IActionResult> GetTotalRecordsAsync([FromQuery] PaginationDTO pagination)
+    {
+        var action = await _statesUnitOfWork.GetTotalRecordsAsync(pagination);
+        if (action.WasSuccess)
+        {
+            return Ok(action.Result);
+        }
+        return BadRequest();
+    }
+
     [HttpGet]
     public override async Task<IActionResult> GetAsync()
     {
@@ -42,35 +71,4 @@ public class StatesController : GenericController<State>
         }
         return NotFound(response.Message);
     }
-    [HttpGet("paginated")]
-    public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
-    {
-        var action = await _statesUnitOfWork.GetAsync(pagination);
-
-        if (action.WasSuccess)
-        {
-            return Ok(action.Result);
-        }
-        return BadRequest();
-    }
-
-    [HttpGet("totalRecords")]
-    public override async Task<IActionResult> GetTotalRecordsAsync([FromQuery] PaginationDTO pagination)
-    {
-        var action = await _statesUnitOfWork.GetTotalRecordsAsync(pagination);
-
-        if (action.WasSuccess)
-        {
-            return Ok(action.Result);
-        }
-        return BadRequest(action.Message);
-    }
-
-    [AllowAnonymous]
-    [HttpGet("combo/{countryId:int}")]
-    public async Task<IActionResult> GetComboAsync(int countryId)
-    {
-        return Ok(await _statesUnitOfWork.GetComboAsync(countryId));
-    }
-
 }

@@ -1,4 +1,4 @@
-﻿namespace  Taller.Backend.Helpers;
+﻿namespace Taller.Backend.Helpers;
 
 public interface IFileStorage
 {

@@ -1,6 +1,5 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Taller.Backend.Helpers;
 
 namespace Taller.Backend.Helpers;
 
@@ -12,7 +11,6 @@ public class FileStorage : IFileStorage
     {
         _connectionString = configuration.GetConnectionString("AzureStorage")!;
     }
-
     public async Task RemoveFileAsync(string path, string containerName)
     {
         var client = new BlobContainerClient(_connectionString, containerName);

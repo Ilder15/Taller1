@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Taller.Backend.Repositories.Interfaces;
-using Taller.Backend.UnitOfWork.Interfaces;
+using Taller.Backend.UnitsOfWork.Interfaces;
 using Taller.Shared.DTOs;
 using Taller.Shared.Entities;
 
-namespace Taller.Backend.UnitOfWork.Implementations;
+namespace Taller.Backend.UnitsOfWork.Implementations;
 
 public class UsersUnitOfWork : IUsersUnitOfWork
 {
@@ -15,6 +15,16 @@ public class UsersUnitOfWork : IUsersUnitOfWork
         _usersRepository = usersRepository;
     }
 
+    public async Task<User> GetUserAsync(Guid userId) => await _usersRepository.GetUserAsync(userId);
+
+    public async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword) => await _usersRepository.ChangePasswordAsync(user, currentPassword, newPassword);
+
+    public async Task<IdentityResult> UpdateUserAsync(User user) => await _usersRepository.UpdateUserAsync(user);
+
+    public async Task<SignInResult> LoginAsync(LoginDTO model) => await _usersRepository.LoginAsync(model);
+
+    public async Task LogoutAsync() => await _usersRepository.LogoutAsync();
+
     public async Task<IdentityResult> AddUserAsync(User user, string password) => await _usersRepository.AddUserAsync(user, password);
 
     public async Task AddUserToRoleAsync(User user, string roleName) => await _usersRepository.AddUserToRoleAsync(user, roleName);
@@ -24,8 +34,4 @@ public class UsersUnitOfWork : IUsersUnitOfWork
     public async Task<User> GetUserAsync(string email) => await _usersRepository.GetUserAsync(email);
 
     public async Task<bool> IsUserInRoleAsync(User user, string roleName) => await _usersRepository.IsUserInRoleAsync(user, roleName);
-    public async Task<SignInResult> LoginAsync(LoginDTO model) => await _usersRepository.LoginAsync(model);
-
-    public async Task LogoutAsync() => await _usersRepository.LogoutAsync();
-
 }
